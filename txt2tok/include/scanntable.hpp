@@ -2,15 +2,22 @@
 #define _T2T_SCANNTABLE_HPP_
 
 #include <regex>
-#include <vector>
 
 namespace t2t {
 
-struct ScannTable final {
-  std::vector<std::regex> _patterns;
-  std::vector<std::regex> _repr;
+template <class T>
+concept TidKind = std::is_enum_v<T> and requires { T::unknown; };
 
-  void register_token(std::regex);
+template <TidKind TidT>
+struct ScannTable final {
+ private:
+  std::regex _patterns[TidT::unknown];
+  std::string _repr[TidT::unknown];
+
+ public:
+  void register_token(TidT tid, std::regex re, const char* repr = "");
+  // Token operator[](const Span& span);
+  // const char* operator[](const Token& token);
 };
 
 }  // namespace t2t
