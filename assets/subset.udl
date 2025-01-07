@@ -1,0 +1,10 @@
+var Num | Str x = 1;
+var Num | Str y = x;
+var Str z = "Hello World!";
+
+type T = Num | Str;
+type U = T;
+
+x = 2;
+y = 3;
+z = "Bober curva ya perdole!";

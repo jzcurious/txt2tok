@@ -1,0 +1,25 @@
+program = stmt ;
+
+stmt = decl , ';' , stmt
+    | upd , ';' , stmt
+    | EPS ;
+
+decl = var_decl
+    | const_decl
+    | type_decl
+    | struct_decl
+    | func_decl ;
+
+var_decl = 'var' , type_val , ID , [ '=' , var_val ] ;
+
+const_decl = 'const' , type_val , ID , [ '=' , var_val ] ;
+
+type_decl = 'type' , ID , '=' , type_val ;
+
+struct_decl = 'struct' , ID , '{' , [ decl ] , '}' ;
+
+func_decl = 'func' , type_val , ID , '(' , [ var_decl , { ',' , var_decl } ] , ')' , func_body ;
+
+func_body = '{' , [ stmt , ';' ] , { ret_expr , ';' } , '}' ; (* ??? *)
+
+ret_expr = 'ret' , var_val ;
