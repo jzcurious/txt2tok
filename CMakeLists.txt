@@ -12,4 +12,4 @@ else()
 endif()
 
 add_subdirectory(tests)
-add_subdirectory(txt2tok-lib)
+add_subdirectory(txt2tok)
