@@ -12,9 +12,14 @@ class Source {
   std::fstream _ifstream;
 
  public:
+  struct Cursor {
+    std::string_view fname;
+    std::size_t nrow;
+    std::size_t ncol;
+  };
+
   struct Line {
-    const std::string_view fname;
-    const std::size_t num;
+    Cursor cursor;
     const std::string content;
     operator bool();
   };

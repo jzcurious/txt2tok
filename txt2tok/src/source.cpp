@@ -7,7 +7,11 @@ Source::Source(const std::string& fname)
     , fname(fname) {}
 
 Source::Line Source::read_line() {
-  if (eof()) return Line{fname, 0, ""};
+  if (eof())
+    return Line{
+        {fname, 0, 0},
+        ""
+    };
 
   std::string content;
 
@@ -16,11 +20,14 @@ Source::Line Source::read_line() {
     ++_line_counter;
   }
 
-  return Line{fname, _line_counter, content};
+  return Line{
+      {fname, _line_counter, 1},
+      content
+  };
 }
 
 Source::Line::operator bool() {
-  return num;
+  return cursor.nrow;
 }
 
 Source::operator bool() {
