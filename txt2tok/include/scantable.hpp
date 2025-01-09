@@ -16,16 +16,16 @@ using Span = strspan::StrSpan<const std::string>;
 template <TidKind TidT>
 struct ScanTable final {
  private:
-  std::regex _patterns[TidT::unknown];
-  std::string_view _repr[TidT::unknown];
+  std::regex _patterns[TidT::unknown + 1];
+  const char* _repr[TidT::unknown + 1];
 
  public:
-  void register_token(TidT tid, std::regex re, const char* repr = "") {
+  void bind_token(TidT tid, std::regex re, const char* repr = "") {
     _patterns[tid] = re;
     _repr[tid] = repr;
   }
 
-  Token operator[](const Span& span) const {
+  Token match(const Span& span) const {
     std::smatch sm;
     std::size_t i = 0;
 
@@ -38,11 +38,15 @@ struct ScanTable final {
     return Token{};
   }
 
-  const char* operator[](const Token& token) const {
+  Token match(const std::string& str) const {
+    return match(Span(str));
+  }
+
+  const char* repr(const Token& token) const {
     return _repr[token.tid];
   }
 
-  const char* operator[](TidT tid) const {
+  const char* repr(TidT tid) const {
     return _repr[tid];
   }
 };
