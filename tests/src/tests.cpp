@@ -2,9 +2,11 @@
 #include <fstream>
 #include <gtest/gtest.h>
 
+static const char* src_path = "../../assets/tests.udl";
+
 TEST(Source, reading) {
-  auto src = t2t::Source("../../assets/tests.udl");
-  auto istream = std::ifstream("../../assets/tests.udl");
+  auto src = t2t::Source(src_path);
+  auto istream = std::ifstream(src_path);
 
   std::vector<std::string> lines1;
   std::vector<std::string> lines2;

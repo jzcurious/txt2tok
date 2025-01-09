@@ -16,7 +16,6 @@ class Source {
     const std::string_view fname;
     const std::size_t num;
     const std::string content;
-
     operator bool();
   };
 
