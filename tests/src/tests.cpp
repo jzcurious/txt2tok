@@ -76,7 +76,7 @@ static auto table = t2t::ScanTableBuilder<Tid>{}
   .bind_token(Tid::comma,         R"(^,)",                  "\",\""              )
   .bind_token(Tid::line_comment,  R"(^//.*$)",              "line comment"       )
   .bind_token(Tid::block_comment, R"(^/\*(.|\s)*\*/)",      "block comment"      )
-  .bind_token(Tid::unknown,       R"(.*)",                  "unknown"            )
+  .bind_token(Tid::unknown,       R"(.*)",                  "unknown symbol"     )
   .build();
 // clang-format on
 

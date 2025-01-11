@@ -48,6 +48,8 @@ struct Point {
 
 type T = U<T, V>;
 
+``` type T = U<T, V>;
+
 func Num linear(Num x, Num b) {
     const Num a = 2;
     ret a*x + b;

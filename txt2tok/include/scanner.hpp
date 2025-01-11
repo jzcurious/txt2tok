@@ -38,9 +38,8 @@ class Scanner final {
       span.begin_idx(ncol + token.val.size());
 
       if (token.tid == TidT::unknown) {
-        // TODO: wall
         // Messenger::unknown_symbol(token);
-        exit(1);
+        // exit(1);
       }
 
       _tokens.push(token);
