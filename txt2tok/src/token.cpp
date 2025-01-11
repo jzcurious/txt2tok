@@ -2,6 +2,10 @@
 
 using namespace t2t;
 
-Token::operator bool() {
+MaybeToken::operator bool() {
   return val.size();
+}
+
+Token::operator MaybeToken() {
+  return MaybeToken{tid, val};
 }

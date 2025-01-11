@@ -5,9 +5,15 @@
 
 namespace t2t {
 
-struct Token final {
+struct MaybeToken;
+
+struct Token {
   std::size_t tid;
   std::string val;  // TODO: replace to StrSpan
+  operator MaybeToken();
+};
+
+struct MaybeToken final : Token {
   operator bool();  // return true if Token::val is not empty
 };
 

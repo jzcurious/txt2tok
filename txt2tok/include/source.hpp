@@ -1,6 +1,8 @@
 #ifndef _T2T_SOURCE_HPP_
 #define _T2T_SOURCE_HPP_
 
+#include "line.hpp"
+
 #include <fstream>
 #include <regex>  // IWYU pragma: export
 
@@ -13,17 +15,11 @@ class Source {
   const std::regex _skip_regex;
 
  public:
-  struct Line final {
-    const std::size_t num;
-    const std::string content;
-    operator bool();  // return true if line is not empty
-  };
-
   const std::string fname;
 
   Source(const std::string& fname, const char* skip_regex = R"(^\s*$)");
   Source(const std::string& fname, const std::regex& skip_regex);
-  Line read_line();
+  MaybeLine read_line();
   operator bool();
   bool eof();
 };

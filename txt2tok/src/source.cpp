@@ -13,8 +13,8 @@ Source::Source(const std::string& fname, const std::regex& skip_regex)
     , _skip_regex(skip_regex)
     , fname(fname) {}
 
-Source::Line Source::read_line() {
-  if (eof()) return Line{0, ""};
+MaybeLine Source::read_line() {
+  if (eof()) return Line{};
 
   std::string content;
 
@@ -24,10 +24,6 @@ Source::Line Source::read_line() {
   }
 
   return Line{_line_counter, content};
-}
-
-Source::Line::operator bool() {
-  return content.size();
 }
 
 Source::operator bool() {

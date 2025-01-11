@@ -26,7 +26,7 @@ class Scanner final {
   Scanner(const ScanTable<TidT>& table)
       : _table(table) {}
 
-  Token scan(Source& src) {
+  MaybeToken scan(Source& src) {
     if (not _tokens.empty()) return _pop_token();
 
     auto line = src.read_line();
