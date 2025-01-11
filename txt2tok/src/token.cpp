@@ -9,3 +9,14 @@ MaybeToken::operator bool() {
 Token::operator MaybeToken() {
   return MaybeToken{tid, val};
 }
+
+MaybeAnchoredToken::operator bool() {
+  return val.size();
+}
+
+AnchoredToken::operator MaybeAnchoredToken() {
+  return MaybeAnchoredToken{
+      Token{tid, val},
+      pos,
+  };
+}

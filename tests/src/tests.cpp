@@ -122,7 +122,7 @@ TEST(Scanner, scan) {
   auto src = t2t::Source(src_path);
   auto scanner = t2t::Scanner(table);
 
-  t2t::MaybeToken t;
+  t2t::MaybeAnchoredToken t;
 
   while ((t = scanner.scan(src))) {
     std::cout << table.repr(t) << " " << t.val << std::endl;

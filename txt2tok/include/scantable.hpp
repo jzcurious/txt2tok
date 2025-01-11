@@ -39,6 +39,8 @@ struct ScanTable final {
       ++i;
     }
 
+    // TODO: return MaybeToken
+
 #if (DEBUG)
     std::unreachable();
 #endif

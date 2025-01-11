@@ -6,17 +6,15 @@
 #include "token.hpp"
 #include <queue>
 
-#include <iostream>
-
 namespace t2t {
 
 template <TidKind TidT>
 class Scanner final {
  private:
   const ScanTable<TidT>& _table;
-  std::queue<Token> _tokens;
+  std::queue<AnchoredToken> _tokens;
 
-  Token _pop_token() {
+  AnchoredToken _pop_token() {
     auto t = _tokens.front();
     _tokens.pop();
     return t;
@@ -26,24 +24,22 @@ class Scanner final {
   Scanner(const ScanTable<TidT>& table)
       : _table(table) {}
 
-  MaybeToken scan(Source& src) {
+  MaybeAnchoredToken scan(Source& src) {
     if (not _tokens.empty()) return _pop_token();
 
     auto line = src.read_line();
-    if (not line) return Token{};
+    if (not line) return MaybeAnchoredToken{};
 
     auto span = Span(line.content);
     for (std::size_t ncol = 0; not span.empty(); ncol = span.begin_idx()) {
-      auto token = _table.match(span);
+      AnchoredToken token = {
+          _table.match(span), {src.fname, line.num, ncol}
+      };
       span.begin_idx(ncol + token.val.size());
-
-      // if (ScanTable::skip.contains(token.tid)) continue;
-      // token.cursor = {src.fname, line.num, ncol + 1};
 
       if (token.tid == TidT::unknown) {
         // TODO: wall
         // Messenger::unknown_symbol(token);
-        std::cout << token.val << std::endl;
         exit(1);
       }
 
