@@ -10,6 +10,7 @@ class Source {
  private:
   std::size_t _line_counter = 0;
   std::fstream _ifstream;
+  const std::regex _skip_regex;
 
  public:
   struct Line final {
@@ -20,7 +21,8 @@ class Source {
 
   const std::string fname;
 
-  Source(const std::string& fname);
+  Source(const std::string& fname, const char* skip_regex = R"(^\s*$)");
+  Source(const std::string& fname, const std::regex& skip_regex);
   Line read_line();
   operator bool();
   bool eof();
