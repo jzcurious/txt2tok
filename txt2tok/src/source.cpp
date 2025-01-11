@@ -1,4 +1,5 @@
 #include "source.hpp"
+#include <regex>
 
 using namespace t2t;
 
@@ -7,27 +8,21 @@ Source::Source(const std::string& fname)
     , fname(fname) {}
 
 Source::Line Source::read_line() {
-  if (eof())
-    return Line{
-        {fname, 0, 0},
-        ""
-    };
+  if (eof()) return Line{0, ""};
 
   std::string content;
+  const auto skip_re = std::regex(R"(^\s*$)");
 
-  for (content = '\n'; content == "\n" and not _ifstream.eof();) {
+  for (; not eof(); ++_line_counter) {
     std::getline(_ifstream, content);
-    ++_line_counter;
+    if (not std::regex_match(content, skip_re)) break;
   }
 
-  return Line{
-      {fname, _line_counter, 1},
-      content
-  };
+  return Line{_line_counter, content};
 }
 
 Source::Line::operator bool() {
-  return cursor.nrow;
+  return content.size();
 }
 
 Source::operator bool() {

@@ -16,6 +16,10 @@ file(GLOB_RECURSE SRC
 
 add_library(txt2tok STATIC ${SRC})
 
+target_compile_definitions(txt2tok PRIVATE
+    "DEBUG=$<CONFIG:Debug>"
+)
+
 target_include_directories(txt2tok PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
 )

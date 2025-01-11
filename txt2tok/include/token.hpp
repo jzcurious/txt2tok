@@ -8,6 +8,7 @@ namespace t2t {
 struct Token final {
   std::size_t tid;
   std::string val;  // TODO: replace to StrSpan
+  operator bool();  // return true if Token::val is not empty
 };
 
 }  // namespace t2t

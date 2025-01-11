@@ -1,3 +1,4 @@
+#include "scanner.hpp"
 #include "scantable.hpp"
 #include "source.hpp"
 #include "stbuilder.hpp"
@@ -23,6 +24,10 @@ enum Tid {
   str_lit,
   num_lit,
   semicolon,
+  plus,
+  minus,
+  mul,
+  divide,
   lpar,
   rpar,
   lbracket,
@@ -55,6 +60,10 @@ static auto table = t2t::ScanTableBuilder<Tid>{}
   .bind_token(Tid::str_lit,       R"(^\"([^\"\n]|\.)*\")",  "string literal"     )
   .bind_token(Tid::num_lit,       R"(^[0-9]+(\.[0-9]+)?)",  "number literal"     )
   .bind_token(Tid::semicolon,     R"(^;)",                  "\";\""              )
+  .bind_token(Tid::plus,          R"(^\+)",                 "\"+\""              )
+  .bind_token(Tid::minus,         R"(^\-)",                 "\"-\""              )
+  .bind_token(Tid::mul,           R"(^\*)",                 "\"*\""              )
+  .bind_token(Tid::divide,        R"(^/)",                  "\"/\""              )
   .bind_token(Tid::lpar,          R"(^\()",                 "\"(\""              )
   .bind_token(Tid::rpar,          R"(^\))",                 "\")\""              )
   .bind_token(Tid::lbracket,      R"(^\[)",                 "\"[\""              )
@@ -72,20 +81,23 @@ static auto table = t2t::ScanTableBuilder<Tid>{}
 // clang-format on
 
 TEST(Source, reading) {
-  auto src = t2t::Source(src_path);
+  auto src1 = t2t::Source(src_path);
+  auto src2 = t2t::Source(src_path);
   auto istream = std::ifstream(src_path);
 
   std::vector<std::string> lines1;
   std::vector<std::string> lines2;
+  std::vector<std::string> lines3;
 
-  while (not src.eof()) {
-    lines1.push_back(src.read_line().content);
+  while (not src1.eof()) {
+    lines1.push_back(src1.read_line().content);
   }
+  lines1.pop_back();
 
-  std::string line;
-  while (not istream.eof()) {
-    std::getline(istream, line);
-    if (line != "\n") lines2.push_back(line);
+  while (1) {
+    auto line = src2.read_line();
+    if (not line) break;
+    lines2.push_back(line.content);
   }
 
   EXPECT_EQ(lines1, lines2);
@@ -104,4 +116,17 @@ TEST(ScanTableBuilder, repr) {
 
   EXPECT_EQ(std::string(table.repr(static_cast<Tid>(t1.tid))), "\"var\"");
   EXPECT_EQ(std::string(table.repr(t1)), "\"var\"");
+}
+
+TEST(Scanner, scan) {
+  auto src = t2t::Source(src_path);
+  auto scanner = t2t::Scanner(table);
+
+  t2t::Token t;
+
+  while ((t = scanner.scan(src))) {
+    std::cout << table.repr(t) << " " << t.val << std::endl;
+  }
+
+  EXPECT_EQ(1, 1);
 }

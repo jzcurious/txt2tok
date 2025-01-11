@@ -6,6 +6,10 @@
 
 #include <regex>
 
+#if (DEBUG)
+  #include <utility>
+#endif
+
 namespace t2t {
 
 template <class T>
@@ -35,7 +39,11 @@ struct ScanTable final {
       ++i;
     }
 
-    return Token{};
+#if (DEBUG)
+    std::unreachable();
+#endif
+
+    return Token{};  // unreachable
   }
 
   Token match(const std::string& str) const {

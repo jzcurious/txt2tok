@@ -2,7 +2,7 @@
 #define _T2T_SOURCE_HPP_
 
 #include <fstream>
-#include <string_view>
+#include <regex>  // IWYU pragma: export
 
 namespace t2t {
 
@@ -12,16 +12,10 @@ class Source {
   std::fstream _ifstream;
 
  public:
-  struct Cursor {
-    std::string_view fname;
-    std::size_t nrow;
-    std::size_t ncol;
-  };
-
-  struct Line {
-    Cursor cursor;
+  struct Line final {
+    const std::size_t num;
     const std::string content;
-    operator bool();
+    operator bool();  // return true if line is not empty
   };
 
   const std::string fname;
