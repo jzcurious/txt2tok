@@ -15,7 +15,8 @@ template <class T>
 concept UnknownSymbolHandlerKind = std::is_invocable_v<T, AnchoredToken>;
 
 inline auto default_unknown_symbol_handler = [](const t2t::AnchoredToken& token) {
-  std::cout << std::format("Unknown symbol at {}.\n", token.pos.link());
+  std::cout << std::format(
+      "Unknown symbol at {}: \"{}\".\n", token.pos.link(), token.val);
 };
 
 template <TidKind TidT, UnknownSymbolHandlerKind UnknownSymbolHandlerT>

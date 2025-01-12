@@ -102,30 +102,30 @@ TEST(Source, reading) {
   EXPECT_EQ(lines1, lines2);
 }
 
-// TEST(ScanTableBuilder, match) {
-//   auto t1 = table.match("var x = 1;");
-//   auto t2 = t2t::Token{Tid::var_kw, "var"};
+TEST(ScanTableBuilder, match) {
+  auto t1 = table.match("var x = 1;");
+  auto t2 = t2t::Token{Tid::var_kw, "var"};
 
-//   EXPECT_EQ(t1.tid, t2.tid);
-//   EXPECT_EQ(t1.val, t2.val);
-// }
+  EXPECT_EQ(t1.tid, t2.tid);
+  EXPECT_EQ(t1.val, t2.val);
+}
 
-// TEST(ScanTableBuilder, repr) {
-//   auto t1 = table.match("var x = 1;");
+TEST(ScanTableBuilder, repr) {
+  auto t1 = table.match("var x = 1;");
 
-//   EXPECT_EQ(std::string(table.repr(static_cast<Tid>(t1.tid))), "\"var\"");
-//   EXPECT_EQ(std::string(table.repr(t1)), "\"var\"");
-// }
+  EXPECT_EQ(std::string(table.repr(static_cast<Tid>(t1.tid))), "\"var\"");
+  EXPECT_EQ(std::string(table.repr(t1)), "\"var\"");
+}
 
-// TEST(Scanner, scan) {
-//   auto src = t2t::Source(src_path);
-//   auto scanner = t2t::Scanner(table, t2t::default_unknown_symbol_handler);
+TEST(Scanner, scan) {
+  auto src = t2t::Source(src_path);
+  auto scanner = t2t::Scanner(table, t2t::default_unknown_symbol_handler);
 
-//   t2t::MaybeAnchoredToken t;
+  t2t::MaybeAnchoredToken t;
 
-//   while ((t = scanner.scan(src))) {
-//     std::cout << table.repr(t) << " " << t.val << std::endl;
-//   }
+  while ((t = scanner.scan(src))) {
+    std::cout << table.repr(t) << " " << t.val << std::endl;
+  }
 
-//   EXPECT_EQ(1, 1);
-// }
+  EXPECT_EQ(1, 1);
+}
