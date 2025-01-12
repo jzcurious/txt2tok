@@ -1,6 +1,8 @@
 #ifndef _T2T_TOKEN_HPP_
 #define _T2T_TOKEN_HPP_
 
+#include "cursor.hpp"
+
 #include <string>
 
 namespace t2t {
@@ -15,12 +17,6 @@ struct Token {
 
 struct MaybeToken final : Token {
   operator bool();  // return true if Token::val is not empty
-};
-
-struct Cursor final {
-  std::string fname;
-  std::size_t nrow;
-  std::size_t ncol;
 };
 
 struct MaybeAnchoredToken;
