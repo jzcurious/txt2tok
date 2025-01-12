@@ -11,7 +11,7 @@ struct MaybeToken;
 
 struct Token {
   std::size_t tid;
-  std::string val;  // TODO: replace to StrSpan
+  std::string val;
   operator MaybeToken();
 };
 
