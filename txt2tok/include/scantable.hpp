@@ -6,10 +6,6 @@
 
 #include <regex>
 
-#if (DEBUG)
-  #include <utility>
-#endif
-
 namespace t2t {
 
 template <class T>
@@ -19,9 +15,12 @@ using Span = strspan::StrSpan<const std::string>;
 
 template <TidKind TidT>
 struct ScanTable final {
+ public:
+  static constexpr const std::size_t nrows = TidT::unknown + 1;
+
  private:
-  std::regex _patterns[TidT::unknown + 1];
-  const char* _repr[TidT::unknown + 1];
+  std::regex _patterns[nrows];
+  const char* _repr[nrows];
 
  public:
   void bind_token(TidT tid, std::regex re, const char* repr = "") {
@@ -31,21 +30,13 @@ struct ScanTable final {
 
   Token match(const Span& span) const {
     std::smatch sm;
-    std::size_t i = 0;
 
-    for (auto p : _patterns) {
-      std::regex_search(span.begin(), span.end(), sm, _patterns[i]);
-      if (sm.size()) return Token{i, sm[0]};
-      ++i;
+    for (std::size_t i = 0; i < nrows; ++i) {
+      if (std::regex_search(span.begin(), span.end(), sm, _patterns[i]))
+        return Token{i, sm[0]};
     }
 
-    // TODO: return MaybeToken
-
-#if (DEBUG)
-    std::unreachable();
-#endif
-
-    return Token{};  // unreachable
+    return Token{TidT::unknown};
   }
 
   Token match(const std::string& str) const {
