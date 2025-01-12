@@ -1,7 +1,7 @@
 #ifndef _T2T_CURSOR_
 #define _T2T_CURSOR_
 
-#include <format>
+#include <format>  // IWYU pragma: export
 #include <string>
 
 namespace t2t {
@@ -11,9 +11,7 @@ struct Cursor final {
   std::size_t nrow;
   std::size_t ncol;
 
-  inline std::string link() const {
-    return std::format("{}:{}:{}", fname, nrow, ncol);
-  }
+  std::string link() const;
 };
 
 }  // namespace t2t
