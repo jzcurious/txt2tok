@@ -12,7 +12,7 @@ struct Cursor final {
   std::size_t nrow;
   std::size_t ncol;
 
-  std::string link() const;
+  std::string link(bool absolute = false) const;
 };
 
 }  // namespace t2t
