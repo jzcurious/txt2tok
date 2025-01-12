@@ -1,17 +1,16 @@
 #include "source.hpp"
-#include <regex>
 
 using namespace t2t;
 
 Source::Source(const std::string& fname, const char* skip_regex)
-    : _ifstream(fname)
-    , _skip_regex(std::regex(skip_regex))
-    , fname(fname) {}
+    : path(fs::absolute(fname))
+    , _ifstream(path)
+    , _skip_regex(fname) {}
 
 Source::Source(const std::string& fname, const std::regex& skip_regex)
-    : _ifstream(fname)
-    , _skip_regex(skip_regex)
-    , fname(fname) {}
+    : path(fs::absolute(fname))
+    , _ifstream(path)
+    , _skip_regex(skip_regex) {}
 
 MaybeLine Source::read_line() {
   if (eof()) return Line{};

@@ -45,7 +45,7 @@ class Scanner final {
     auto span = Span(line.content);
     for (std::size_t ncol = 0; not span.empty(); ncol = span.begin_idx()) {
       AnchoredToken token = {
-          _table.match(span), {src.fname, line.num, ncol}
+          _table.match(span), {src.path, line.num, ncol}
       };
       span.begin_idx(ncol + token.val.size());
 

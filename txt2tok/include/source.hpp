@@ -3,20 +3,24 @@
 
 #include "line.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <regex>  // IWYU pragma: export
 
 namespace t2t {
 
+namespace fs = std::filesystem;
+
 class Source {
+ public:
+  const fs::path path;
+
  private:
   std::size_t _line_counter = 0;
   std::fstream _ifstream;
   const std::regex _skip_regex;
 
  public:
-  const std::string fname;
-
   Source(const std::string& fname, const char* skip_regex = R"(^\s*$)");
   Source(const std::string& fname, const std::regex& skip_regex);
   MaybeLine read_line();
