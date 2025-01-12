@@ -12,9 +12,13 @@ struct ScanTableBuilder final {
   bool _unknown_symbol_is_redefined;
 
  public:
+  ScanTableBuilder()
+      : _table()
+      , _unknown_symbol_is_redefined(false) {}
+
   ScanTableBuilder& bind_token(TidT tid, std::regex re, const char* repr = "") {
-    _table.bind_token(tid, re, repr);
     if (tid == TidT::unknown) _unknown_symbol_is_redefined = true;
+    _table.bind_token(tid, re, repr);
     return *this;
   }
 

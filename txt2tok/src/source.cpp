@@ -5,7 +5,7 @@ using namespace t2t;
 Source::Source(const std::string& fname, const char* skip_regex)
     : path(fs::absolute(fname))
     , _ifstream(path)
-    , _skip_regex(fname) {}
+    , _skip_regex(std::regex(skip_regex)) {}
 
 Source::Source(const std::string& fname, const std::regex& skip_regex)
     : path(fs::absolute(fname))
