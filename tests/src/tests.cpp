@@ -119,7 +119,7 @@ TEST(ScanTableBuilder, repr) {
 
 TEST(Scanner, scan) {
   auto src = t2t::Source(src_path);
-  auto scanner = t2t::Scanner(table, t2t::default_unknown_symbol_handler);
+  auto scanner = t2t::Scanner(table);
 
   t2t::MaybeAnchoredToken t;
 

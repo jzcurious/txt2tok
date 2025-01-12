@@ -14,12 +14,18 @@ namespace t2t {
 template <class T>
 concept UnknownSymbolHandlerKind = std::is_invocable_v<T, AnchoredToken>;
 
+namespace detail {
+
 inline auto default_unknown_symbol_handler = [](const t2t::AnchoredToken& token) {
   std::cout << std::format(
       "Unknown symbol at {}: \"{}\".\n", token.pos.link(), token.val);
 };
 
-template <TidKind TidT, UnknownSymbolHandlerKind UnknownSymbolHandlerT>
+}  // namespace detail
+
+template <TidKind TidT,
+    UnknownSymbolHandlerKind UnknownSymbolHandlerT
+    = decltype(detail::default_unknown_symbol_handler)>
 class Scanner final {
  private:
   const ScanTable<TidT>& _table;
@@ -33,6 +39,10 @@ class Scanner final {
   }
 
  public:
+  Scanner(const ScanTable<TidT>& table)
+      : _table(table)
+      , _unknown_symbol_handler(detail::default_unknown_symbol_handler) {}
+
   Scanner(const ScanTable<TidT>& table, UnknownSymbolHandlerT unknown_symbol_handler)
       : _table(table)
       , _unknown_symbol_handler(unknown_symbol_handler) {}
