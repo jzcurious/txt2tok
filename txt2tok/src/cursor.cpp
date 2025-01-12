@@ -3,5 +3,5 @@
 using namespace t2t;
 
 std::string Cursor::link() const {
-  return std::format("{}:{}:{}", fname, nrow, ncol);
+  return std::format("{}:{}:{}", path.generic_string(), nrow, ncol);
 }
