@@ -4,14 +4,25 @@
 #include "scantable.hpp"
 #include "source.hpp"
 #include "token.hpp"
+
+#include <iostream>
 #include <queue>
+#include <type_traits>
 
 namespace t2t {
 
-template <TidKind TidT>
+template <class T>
+concept UnknownSymbolHandlerKind = std::is_invocable_v<T, AnchoredToken>;
+
+inline auto default_unknown_symbol_handler = [](const t2t::AnchoredToken& token) {
+  std::cout << std::format("Unknown symbol at {}.\n", token.pos.link());
+};
+
+template <TidKind TidT, UnknownSymbolHandlerKind UnknownSymbolHandlerT>
 class Scanner final {
  private:
   const ScanTable<TidT>& _table;
+  UnknownSymbolHandlerT _unknown_symbol_handler;
   std::queue<AnchoredToken> _tokens;
 
   AnchoredToken _pop_token() {
@@ -21,8 +32,9 @@ class Scanner final {
   }
 
  public:
-  Scanner(const ScanTable<TidT>& table)
-      : _table(table) {}
+  Scanner(const ScanTable<TidT>& table, UnknownSymbolHandlerT unknown_symbol_handler)
+      : _table(table)
+      , _unknown_symbol_handler(unknown_symbol_handler) {}
 
   MaybeAnchoredToken scan(Source& src) {
     if (not _tokens.empty()) return _pop_token();
@@ -37,11 +49,7 @@ class Scanner final {
       };
       span.begin_idx(ncol + token.val.size());
 
-      if (token.tid == TidT::unknown) {
-        // Messenger::unknown_symbol(token);
-        // exit(1);
-      }
-
+      if (token.tid == TidT::unknown) _unknown_symbol_handler(token);
       _tokens.push(token);
     }
 
