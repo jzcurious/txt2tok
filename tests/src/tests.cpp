@@ -1,8 +1,9 @@
-#include "scanner.hpp"
-#include "scantable.hpp"
-#include "source.hpp"
-#include "stbuilder.hpp"
-#include "token.hpp"
+#include "txt2tok/scanner.hpp"
+#include "txt2tok/scantable.hpp"
+#include "txt2tok/source.hpp"
+#include "txt2tok/stbuilder.hpp"
+#include "txt2tok/token.hpp"
+
 #include <fstream>
 #include <gtest/gtest.h>
 

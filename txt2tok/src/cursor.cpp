@@ -1,4 +1,4 @@
-#include "cursor.hpp"
+#include "txt2tok/cursor.hpp"
 
 using namespace t2t;
 

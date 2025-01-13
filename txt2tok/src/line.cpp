@@ -1,4 +1,4 @@
-#include "line.hpp"
+#include "txt2tok/line.hpp"
 
 using namespace t2t;
 

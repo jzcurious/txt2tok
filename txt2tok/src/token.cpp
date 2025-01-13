@@ -1,4 +1,4 @@
-#include "token.hpp"
+#include "txt2tok/token.hpp"
 
 using namespace t2t;
 
