@@ -103,6 +103,13 @@ TEST(Source, reading) {
   EXPECT_EQ(lines1, lines2);
 }
 
+TEST(Token, conversion_to_tid) {
+  auto token = t2t::Token{Tid::assign, "="};
+
+  EXPECT_EQ(token, Tid::assign);
+  EXPECT_EQ(Tid::assign, token);
+}
+
 TEST(ScanTableBuilder, match) {
   auto t1 = table.match("var x = 1;");
   auto t2 = t2t::Token{Tid::var_kw, "var"};

@@ -12,6 +12,7 @@ struct MaybeToken;
 struct Token {
   std::size_t tid;
   std::string val;
+  bool operator==(std::size_t rhs) const;
   operator MaybeToken();
 };
 

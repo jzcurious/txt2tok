@@ -2,12 +2,16 @@
 
 using namespace t2t;
 
-MaybeToken::operator bool() {
-  return val.size();
+bool Token::operator==(std::size_t rhs) const {
+  return tid == rhs;
 }
 
 Token::operator MaybeToken() {
   return MaybeToken{tid, val};
+}
+
+MaybeToken::operator bool() {
+  return val.size();
 }
 
 MaybeAnchoredToken::operator bool() {
