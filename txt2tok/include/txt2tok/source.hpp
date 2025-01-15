@@ -11,7 +11,7 @@ namespace t2t {
 
 namespace fs = std::filesystem;
 
-class Source {
+class Source {  // TODO: move the class to a side project
  public:
   const fs::path path;
 

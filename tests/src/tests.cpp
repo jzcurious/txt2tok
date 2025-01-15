@@ -103,11 +103,37 @@ TEST(Source, reading) {
   EXPECT_EQ(lines1, lines2);
 }
 
-TEST(Token, conversion_to_tid) {
+TEST(Token, equals_tid) {
   auto token = t2t::Token{Tid::assign, "="};
 
   EXPECT_EQ(token, Tid::assign);
   EXPECT_EQ(Tid::assign, token);
+}
+
+TEST(AnchoredToken, equals_tid) {
+  auto token = t2t::Token{Tid::assign, "="};
+  auto atoken = t2t::AnchoredToken(token);
+
+  EXPECT_EQ(atoken, Tid::assign);
+  EXPECT_EQ(Tid::assign, atoken);
+}
+
+TEST(MaybeToken, equals_tid) {
+  auto token = t2t::MaybeToken{Tid::assign, "="};
+
+  EXPECT_EQ(token, Tid::assign);
+  EXPECT_EQ(Tid::assign, token);
+}
+
+TEST(MaybeAnchoredToken, equals_tid) {
+  auto token = t2t::AnchoredToken{
+      {Tid::assign, "="},
+      {}
+  };
+  auto atoken = t2t::MaybeAnchoredToken(token);
+
+  EXPECT_EQ(atoken, Tid::assign);
+  EXPECT_EQ(Tid::assign, atoken);
 }
 
 TEST(ScanTableBuilder, match) {
