@@ -2,7 +2,7 @@
 #define _T2T_SCANNER_HPP_
 
 #include "scantable.hpp"
-#include "source.hpp"
+#include "srcreader.hpp"
 #include "token.hpp"
 
 #include <iostream>
@@ -47,7 +47,7 @@ class Scanner final {
       : _table(table)
       , _unknown_symbol_handler(unknown_symbol_handler) {}
 
-  MaybeAnchoredToken scan(Source& src) {
+  MaybeAnchoredToken scan(SourceReader& src) {
     if (not _tokens.empty()) return _pop_token();
 
     auto line = src.read_line();
@@ -56,7 +56,7 @@ class Scanner final {
     auto span = Span(line.content);
     for (std::size_t ncol = 0; not span.empty(); ncol = span.begin_idx()) {
       AnchoredToken token = {
-          _table.match(span), {src.path, line.num, ncol}
+          _table.match(span), {src.path_to_file, line.num, ncol}
       };
       span.begin_idx(ncol + token.val.size());
 

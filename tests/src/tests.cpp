@@ -1,11 +1,12 @@
 #include "txt2tok/scanner.hpp"
 #include "txt2tok/scantable.hpp"
-#include "txt2tok/source.hpp"
+#include "txt2tok/srcreader.hpp"
 #include "txt2tok/stbuilder.hpp"
 #include "txt2tok/token.hpp"
 
 #include <fstream>
 #include <gtest/gtest.h>
+#include <regex>
 
 static const char* src_path = "../../assets/tests.udl";
 
@@ -80,24 +81,22 @@ static auto table = t2t::ScanTableBuilder<Tid>{}
   .build();
 // clang-format on
 
-TEST(Source, reading) {
-  auto src1 = t2t::Source(src_path);
-  auto src2 = t2t::Source(src_path);
+TEST(SourceReader, reading) {
+  auto reader = t2t::SourceReader(src_path);
   auto istream = std::ifstream(src_path);
 
   std::vector<std::string> lines1;
   std::vector<std::string> lines2;
-  std::vector<std::string> lines3;
 
-  while (not src1.eof()) {
-    lines1.push_back(src1.read_line().content);
+  for (t2l::MaybeLine mline; not reader.eof();) {
+    mline = reader.read_line();
+    if (mline) lines1.push_back(mline.content);
   }
-  lines1.pop_back();
 
-  while (1) {
-    auto line = src2.read_line();
-    if (not line) break;
-    lines2.push_back(line.content);
+  auto ifstream = std::ifstream(src_path);
+  for (std::string str; not ifstream.eof();) {
+    std::getline(ifstream, str, '\n');
+    if (not std::regex_match(str, std::regex(R"(^\s*$)"))) lines2.push_back(str);
   }
 
   EXPECT_EQ(lines1, lines2);
@@ -152,7 +151,7 @@ TEST(ScanTableBuilder, repr) {
 }
 
 TEST(Scanner, scan) {
-  auto src = t2t::Source(src_path);
+  auto src = t2t::SourceReader(src_path);
   auto scanner = t2t::Scanner(table);
 
   t2t::MaybeAnchoredToken t;
